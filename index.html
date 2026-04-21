@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seesaw Simulation</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="top-info">
+      <div class="card">
+        <span class="label">LEFT WEIGHT</span>
+        <span class="value" id="leftW">0.0 kg</span>
+      </div>
+      <div class="card">
+        <span class="label">NEXT WEIGHT</span>
+        <span class="value" id="nextW">1 kg</span>
+      </div>
+      <div class="card">
+        <span class="label">RIGHT WEIGHT</span>
+        <span class="value" id="rightW">0.0 kg</span>
+      </div>
+      <div class="card">
+        <span class="label">TILT ANGLE</span>
+        <span class="value" id="angleView">0.0°</span>
+      </div>
+    </header>
+
+    <section class="stage" id="stage">
+      <!-- plank rotates, objects inside rotate with it -->
+      <div class="plank" id="plank">
+        <!-- scale markers will be added by JS -->
+        <div class="scale" id="scale"></div>
+      </div>
+      <div class="pivot"></div>
+      <div class="ground"></div>
+    </section>
+
+    <div class="controls">
+      <button id="resetBtn" class="btn">Reset Seesaw</button>
+      <button id="pauseBtn" class="btn btn-ghost">Pause</button>
+    </div>
+
+    <div class="log-wrap">
+      <ul id="logList" class="log"></ul>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
