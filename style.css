@@ -1,0 +1,45 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  :root {
+    --orange: #ff6f1f;
+    --orange-soft: #ffb347;
+    --red: #d93a2a;
+    --text: #f5e9dc;
+    --muted: #b9a99a;
+    --card: rgba(25, 12, 18, 0.6);
+    --border: rgba(255, 122, 46, 0.22);
+  }
+  
+  html, body {
+    height: 100%;
+  }
+  
+  body {
+    font-family: "Segoe UI", system-ui, Arial, sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    padding: 28px 16px;
+    overflow-x: hidden;
+    /* sunset vibe for you :) */
+    background:
+      radial-gradient(circle at 72% 8%, #ff7a1a 0%, #a32416 32%, #2b0a15 68%, #0b0408 100%);
+  }
+  
+  .wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  
+  button {
+    font-family: inherit;
+    cursor: pointer;
+  }
+  
+  ul { list-style: none; }
