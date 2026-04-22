@@ -110,6 +110,7 @@ function onPlankClick(e) {
   applyTilt();
   updateUI();
   logDrop(o);
+  playDrop(o.w);
 
   console.log("drop", w + "kg ->", side, "at", o.dist + "px");
 }
@@ -270,6 +271,50 @@ function logDrop(o) {
 
 // acilista pause durumu restore edilmisse butonun yazisini duzelt
 if (paused) pauseBtn.textContent = "Resume";
+
+// --- audio (pure Web Audio API - kutuphane kullanmiyoruz) ---
+
+let _audio = null;
+
+function getAudio() {
+  // lazy init - sayfa yuklenir yuklenmez olusturmak bazi tarayicilarda
+  // autoplay policy'ye takiliyor. kullanicinin ilk tiklamasinda olustur.
+  if (!_audio) {
+    try {
+      _audio = new (window.AudioContext || window.webkitAudioContext)();
+    } catch (e) {
+      return null;
+    }
+  }
+  return _audio;
+}
+
+function playDrop(weight) {
+  const ctx = getAudio();
+  if (!ctx) return;
+
+  // agirlik arttikca ses kalinlasir - agir sey daha derin ses cikarir
+  const baseFreq = 420 - weight * 18;
+
+  const osc  = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  osc.type = "triangle";
+  osc.frequency.setValueAtTime(baseFreq, ctx.currentTime);
+  // hizli frekans dusurme = "plop" hissi (sabit tonda cingirtiya benziyordu)
+  osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.55, ctx.currentTime + 0.12);
+
+  // volume envelope: hizli ac, yavas kapat
+  gain.gain.setValueAtTime(0.001, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.18, ctx.currentTime + 0.01);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+
+  osc.start();
+  osc.stop(ctx.currentTime + 0.22);
+}
 
 
 
