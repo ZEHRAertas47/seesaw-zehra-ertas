@@ -107,6 +107,7 @@ function onPlankClick(e) {
   saveState();
   rebalance();
   render();
+  applyTilt();
 
   console.log("drop", w + "kg ->", side, "at", o.dist + "px");
 }
@@ -181,6 +182,15 @@ function render() {
 
 // sayfa acildiginda kaydedilmisleri ciz
 render();
+
+// --- rotation ---
+
+function applyTilt() {
+  plank.style.transform = `rotate(${angle}deg)`;
+}
+
+// sayfa acilista kayitli aciyi uygula
+applyTilt();
 
 
 
