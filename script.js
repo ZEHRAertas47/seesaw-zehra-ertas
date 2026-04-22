@@ -66,6 +66,51 @@ if (!nextW) rollNext();
 console.log("state yuklendi ->", objs.length, "objs, angle:", angle, had ? "(restored)" : "(fresh)");
 
 
+// --- DOM refs ---
+const plank = document.getElementById('plank');
+const stage = document.getElementById('stage');
+
+plank.addEventListener("click", onPlankClick);
+
+function onPlankClick(e) {
+  if (paused) return;
+
+  // plank icindeki x
+  const r = plank.getBoundingClientRect();
+  let cx = e.clientX - r.left;
+  const mid = r.width / 2;
+
+  // merkeze gore mesafe (- sol, + sag)
+  let dist = cx - mid;
+
+  // obje yaricapi kadar kenardan ice cek
+  const pad = 22;
+  if (dist < -mid + pad) dist = -mid + pad;
+  if (dist >  mid - pad) dist =  mid - pad;
+
+  const side  = dist < 0 ? "left" : "right";
+  const w     = nextW;
+  const color = COLORS[objs.length % COLORS.length];
+
+  const o = {
+    id: nextId(),
+    side: side,
+    dist: Math.round(dist),
+    w,
+    color
+  };
+
+  objs.push(o);
+
+  // sonraki agirlik
+  rollNext();
+  saveState();
+
+  console.log("drop", w + "kg ->", side, "at", o.dist + "px");
+}
+
+
+
 
 
 
