@@ -106,6 +106,8 @@ function onPlankClick(e) {
   rollNext();
   saveState();
   rebalance();
+  render();
+
   console.log("drop", w + "kg ->", side, "at", o.dist + "px");
 }
 
@@ -148,6 +150,37 @@ function rebalance() {
   saveState();
 }
 
+
+// --- render ---
+
+function render() {
+  // silinenleri temizle
+  const alive = new Set(objs.map(o => o.id));
+  plank.querySelectorAll(".obj").forEach(el => {
+    if (!alive.has(Number(el.dataset.id))) el.remove();
+  });
+
+  // zaten cizilenleri not al
+  const drawn = new Set();
+  plank.querySelectorAll(".obj").forEach(el => drawn.add(Number(el.dataset.id)));
+
+  // yeni olanlari ekle
+  for (const o of objs) {
+    if (drawn.has(o.id)) continue;
+
+    const el = document.createElement("div");
+    el.className = "obj";
+    el.style.left = (PLANK_W / 2 + o.dist) + "px";
+    el.style.background = o.color;
+    el.textContent = o.w + "kg";
+    el.dataset.id = o.id;
+
+    plank.appendChild(el);
+  }
+}
+
+// sayfa acildiginda kaydedilmisleri ciz
+render();
 
 
 
