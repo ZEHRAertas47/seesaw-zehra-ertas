@@ -109,6 +109,7 @@ function onPlankClick(e) {
   render();
   applyTilt();
   updateUI();
+  logDrop(o);
 
   console.log("drop", w + "kg ->", side, "at", o.dist + "px");
 }
@@ -216,6 +217,59 @@ function updateUI() {
 
 // ilk yuklemede kayitli degerleri yazalim
 updateUI();
+
+// --- controls + log ---
+
+const resetBtn = document.getElementById("resetBtn");
+const pauseBtn = document.getElementById("pauseBtn");
+const logList  = document.getElementById("logList");
+
+resetBtn.addEventListener("click", resetAll);
+pauseBtn.addEventListener("click", togglePause);
+
+function resetAll() {
+  // full state wipe
+  objs   = [];
+  angle  = 0;
+  paused = false;
+  _uid   = 1;
+
+  rollNext();
+  localStorage.removeItem(KEY);
+
+  // DOM temizligi
+  plank.querySelectorAll(".obj").forEach(el => el.remove());
+  logList.innerHTML = "";
+  pauseBtn.textContent = "Pause";
+
+  applyTilt();
+  updateUI();
+}
+
+function togglePause() {
+  paused = !paused;
+  // yazi degistir ki kullanici durumu anlasin
+  pauseBtn.textContent = paused ? "Resume" : "Pause";
+  saveState();
+}
+
+function logDrop(o) {
+  const d = o.dist < 0 ? -o.dist : o.dist;
+  const txt = `${o.w}kg dropped on ${o.side} side at ${d}px from center`;
+
+  const li = document.createElement("li");
+  li.textContent = txt;
+  // en yeni olay ustte gorunsun
+  logList.prepend(li);
+
+  // log cok uzarsa DOM sisiyor - son 20 ile sinirla
+  while (logList.children.length > 20) {
+    logList.lastElementChild.remove();
+  }
+}
+
+// acilista pause durumu restore edilmisse butonun yazisini duzelt
+if (paused) pauseBtn.textContent = "Resume";
 
 
 
