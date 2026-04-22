@@ -105,10 +105,48 @@ function onPlankClick(e) {
   // sonraki agirlik
   rollNext();
   saveState();
-
+  rebalance();
   console.log("drop", w + "kg ->", side, "at", o.dist + "px");
 }
 
+
+
+// --- physics ---
+
+function sideTorque(which) {
+  // which: "left" | "right"
+  let sum = 0;
+  for (let i = 0; i < objs.length; i++) {
+    const o = objs[i];
+    if (o.side !== which) continue;
+    // t = agirlik * merkeze uzaklik (pozitif)
+    const d = o.dist < 0 ? -o.dist : o.dist;
+    sum += o.w * d;
+  }
+  return sum;
+}
+
+function sideWeight(which) {
+  let total = 0;
+  for (const o of objs) {
+    if (o.side === which) total += o.w;
+  }
+  return total;
+}
+
+function calcAngle() {
+  const lT = sideTorque("left");
+  const rT = sideTorque("right");
+  // PDF formulu - max 30 derece
+  const a = Math.max(-MAX_ANGLE, Math.min(MAX_ANGLE, (rT - lT) / 10));
+  return a;
+}
+
+// tiklama sonrasi cagirilacak - fizigi yeniden hesapla
+function rebalance() {
+  angle = calcAngle();
+  saveState();
+}
 
 
 
