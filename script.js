@@ -108,6 +108,7 @@ function onPlankClick(e) {
   rebalance();
   render();
   applyTilt();
+  updateUI();
 
   console.log("drop", w + "kg ->", side, "at", o.dist + "px");
 }
@@ -192,6 +193,29 @@ function applyTilt() {
 // sayfa acilista kayitli aciyi uygula
 applyTilt();
 
+// --- UI updates ---
+
+// dom cache - her frame querySelector cagirmaktansa bir kere al
+const ui = {
+  left:  document.getElementById("leftW"),
+  right: document.getElementById("rightW"),
+  next:  document.getElementById("nextW"),
+  angle: document.getElementById("angleView"),
+};
+
+function updateUI() {
+  const lw = sideWeight("left");
+  const rw = sideWeight("right");
+
+  // toFixed(1) - kg degeri her zaman ondalikli gorunsun ("5.0 kg" gibi)
+  ui.left.textContent  = lw.toFixed(1) + " kg";
+  ui.right.textContent = rw.toFixed(1) + " kg";
+  ui.next.textContent  = nextW + " kg";
+  ui.angle.textContent = angle.toFixed(1) + "°";
+}
+
+// ilk yuklemede kayitli degerleri yazalim
+updateUI();
 
 
 
