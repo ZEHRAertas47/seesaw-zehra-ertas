@@ -1,6 +1,6 @@
 # Seesaw Simulation
 
-A small physics-based playground seesaw built with pure HTML, CSS and vanilla JavaScript. Click anywhere on the plank to drop a random-weight object (1–10 kg) — the seesaw computes the torque for each side and tilts accordingly.
+A small physics-based playground seesaw built with pure HTML, CSS and vanilla JavaScript. Click anywhere on the plank to drop a random-weight object (1–10 kg) the seesaw computes the torque for each side and tilts accordingly.
 
 **Live demo:** https://zehraertas47.github.io/seesaw-zehra-ertas/
 
@@ -20,7 +20,7 @@ A small physics-based playground seesaw built with pure HTML, CSS and vanilla Ja
 
 ### Why CSS transforms instead of canvas?
 
-The brief disallowed canvas. That ended up being a useful constraint — rotating the plank with `transform: rotate()` lets child elements (the dropped objects) inherit the rotation for free. I only track distance from the pivot; CSS does the rest.
+The brief disallowed canvas. That ended up being a useful constraint rotating the plank with `transform: rotate()` lets child elements (the dropped objects) inherit the rotation for free. I only track distance from the pivot; CSS does the rest.
 
 ### Objects live inside the plank
 
@@ -32,7 +32,7 @@ Every dropped object is appended inside the `.plank` element rather than next to
 angle = Math.max(-30, Math.min(30, (rightTorque - leftTorque) / 10))
 ```
 
-I kept the `/ 10` divisor as given — it makes the seesaw feel responsive: small imbalance → small tilt, large imbalance → caps at 30°.
+I kept the `/ 10` divisor as given it makes the seesaw feel responsive: small imbalance → small tilt, large imbalance → caps at 30°.
 
 ### Smooth motion via CSS, not JS
 
@@ -46,22 +46,22 @@ The cubic-bezier gives a slight overshoot so the plank "springs" a little before
 
 ### Render strategy: only append new objects
 
-My first version cleared `.obj` children and re-rendered on every click, which re-ran the drop animation for every existing object — visually distracting. I now track rendered IDs via `dataset.id` and only append new ones.
+My first version cleared `.obj` children and re-rendered on every click, which re-ran the drop animation for every existing object visually distracting. I now track rendered IDs via `dataset.id` and only append new ones.
 
 ### Sound without any library
 
-The Web Audio API is native. I generate a short triangle-wave "plop" with an exponential frequency drop — heavier objects produce a lower tone (`420 - weight × 18` Hz). I use **lazy initialization** for `AudioContext` because Chrome blocks creation before a user gesture.
+The Web Audio API is native. I generate a short triangle-wave "plop" with an exponential frequency drop heavier objects produce a lower tone (`420 - weight × 18` Hz). I use **lazy initialization** for `AudioContext` because Chrome blocks creation before a user gesture.
 
 ### Persistence
 
-State is saved to `localStorage` after every click. On page load I try to restore it. If the JSON is corrupt for any reason, I simply wipe the key and start fresh — no crash.
+State is saved to `localStorage` after every click. On page load I try to restore it. If the JSON is corrupt for any reason, I simply wipe the key and start fresh no crash.
 
 ---
 
 ## Trade-offs & limitations
 
 - **Mobile touch isn't explicitly handled.** Click events fire on tap in modern mobile browsers, so it works, but a production version would add `touchstart` listeners for precise position.
-- **Event log is session-only.** I persist the objects and angle, but not the log, on purpose — the log is feedback, not data.
+- **Event log is session-only.** I persist the objects and angle, but not the log, on purpose the log is feedback, not data.
 - **No collision between objects.** Clicking close positions can visually overlap circles. Adding spacing would have complicated the otherwise neat torque math.
 - **Objects don't "re-fall" when the plank is tilted.** They stay at the position where they were placed. This matches the brief but is not physically accurate.
 
@@ -89,7 +89,7 @@ On every click `rebalance()` runs and calls `calcAngle()`:
 - **Pause** button — freezes new clicks; button label toggles between `Pause` and `Resume`
 - Event log of the last 20 drops
 - Drop animation via CSS keyframes
-- Sound effect via Web Audio API (pure, no libraries) — tone depends on weight
+- Sound effect via Web Audio API (pure, no libraries) tone depends on weight
 - Different color per object from a palette
 - Responsive layout (4-column cards collapse to 2 on small screens; plank shrinks)
 
@@ -104,7 +104,7 @@ I used AI tools (Claude, ChatGPT) as helpers while building this, for:
 - Reviewing the Web Audio API lifecycle (why lazy init is required)
 - Sanity-checking the torque formula against the brief
 
-The core code — click handling, position math, torque logic, render strategy — I wrote and refactored myself step by step. I can walk through every file line by line.
+The core code click handling, position math, torque logic, render strategy. I wrote and refactored myself step by step. I can walk through every file line by line.
 
 ---
 
@@ -141,4 +141,4 @@ python -m http.server 8000
 
 ## Commit history
 
-I committed each logical step separately — HTML skeleton, CSS base, seesaw visuals, cards/buttons/log, state + localStorage, click detection, physics, rendering, rotation, UI updates, controls + event log, sound effect, and this README. Each commit is small and self-contained so the progression is traceable.
+I committed each logical step separately HTML skeleton, CSS base, seesaw visuals, cards/buttons/log, state + localStorage, click detection, physics, rendering, rotation, UI updates, controls + event log, sound effect, and this README. Each commit is small and self-contained so the progression is traceable.
